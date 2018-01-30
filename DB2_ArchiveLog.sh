@@ -4,21 +4,16 @@ function syntax
 {
   echo "The script is executed by OPSWare API to invoke the cmb_cdc_cdc_utility.sh scripts."
   echo "syntax:"
-  echo " DB2_ArchiveLog.sh -HOSTNAME <HostName> -EXECUTOR <ExeCutor> -ACTION <CREATE/DROP> -DBNAME <DBName> "
+  echo " DB2_ArchiveLog.sh -HOSTNAME <HostName> -EXECUTOR <ExeCutor> -DBNAME <DBName> "
   echo
   echo " where:"
   echo " Parameters:"
   echo "   <HostName>       : database machine"
   echo "   <Executor>       : Name of the Executor , general is the instance user "
-  echo "   <Action>         : "
-  echo "         ACHIVELOG  : archive log manually "
-  echo "         GETTIME    : Get the current time for database "
-  echo "         GETVERSION : Get the db version "
-  echo "   -DBName          : The Name of Database"
+  echo "   <DBName>          : The Name of Database"
   echo
   echo " Samples: "
-  echo "   DB2_ArchiveLog.sh -HOSTNAME dba_test -EXECUTOR db2inst1 -ACTION gettime -DBNAME testdb"
-  echo "   DB2_ArchiveLog.sh -HOSTNAME dba_test -EXECUTOR db2inst1 -ACTION getverion -DBNAME testdb"
+  echo "   DB2_ArchiveLog.sh -HOSTNAME dba_test -EXECUTOR db2inst1 -DBNAME testdb"
   exit 22
 }
 
@@ -43,20 +38,17 @@ do
   case $(echo $inopt|tr a-z A-Z) in
     -HOSTNAME) CurOpt="-HOSTNAME";continue;;
     -EXECUTOR) CurOpt="-EXECUTOR";continue;;
-    -ACTION) CurOpt="-ACTION";continue;;
     -DBNAME) CurOpt="-DBNAME";continue;;
     -H|-*) syntax;return -1;;
   esac
   case "${CurOpt}" in
     -HOSTNAME) HostName=`echo ${inopt}`;;
     -EXECUTOR) ExeCutor="${inopt}";;
-    -ACTION) Action=`echo ${inopt}| tr a-z A-Z`;;
     -DBNAME) DBName=`echo ${inopt}| tr a-z A-Z`;;
   esac
 done
 
-[ -z "${HostName}" ] && syntax || [ -z "${ExeCutor}" ] && syntax
-[ -z "${Action}" ] && syntax || [ -z "${DBName}" ] && syntax
+[ -z "${HostName}" ] && syntax || [ -z "${ExeCutor}" ] && syntax || [ -z "${DBName}" ] && syntax
 
 ShellName="$(echo $0|awk -F / '{print $NF}')"
 WorkDir="$(echo $0|sed s/${ShellName}//g)"
@@ -107,7 +99,7 @@ else
    chmod 777 ${_TgtFullPath}/${ScriptName}
 fi
 
-ParameterString="-ACTION ${Action} -DBNAME ${DBName} "
+ParameterString="-ACTION ARCHIVELOG -DBNAME ${DBName} "
 _ScriptName="${_TgtWorkPath}/${ScriptName} ${ParameterString}"
 f_printInfo "/opsw/bin/rosh -l root -n ${HostName} su - ${ExeCutor} -c  \" sh ${_ScriptName}  \"  "
 

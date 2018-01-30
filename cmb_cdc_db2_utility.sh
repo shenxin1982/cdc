@@ -10,13 +10,13 @@ function syntax
   echo "   <path>          : is the full path to this script, normally"
   echo " Parameters: "
   echo "   -Action         "
-  echo "         ACHIVELOG  : archive log manually "
+  echo "         ARCHIVELOG  : archive log manually "
   echo "         GETTIME    : Get the current time for database "
   echo "         GETVERSION : Get the db version "
   echo "   -DBName          : Name of the database "
   echo
   echo " Samples: "
-  echo "   cmb_cdc_db2_utility.sh -ACTION achivelog -DBNAME testdb1 "
+  echo "   cmb_cdc_db2_utility.sh -ACTION archivelog -DBNAME testdb1 "
   echo "   cmb_cdc_db2_utility.sh -ACTION gettime  -DBNAME testdb1 "
   echo "   cmb_cdc_db2_utility.sh -ACTION getversion -DBNAME testdb1 "
   echo
